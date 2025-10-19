@@ -81,7 +81,7 @@ export default function Home() {
       console.log("User authenticated:", authData.user);
 
       // Get user wallet address (assuming it's available in context or auth data)
-      const walletAddress = (context?.user as any)?.address || (context?.user as any)?.custodyAddress;
+      const walletAddress = (context?.user as { address?: string; custodyAddress?: string })?.address || (context?.user as { address?: string; custodyAddress?: string })?.custodyAddress;
 
       if (walletAddress) {
         // Send JO token reward
