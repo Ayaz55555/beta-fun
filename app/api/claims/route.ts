@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const redis = require('redis');
-
 // Simple in-memory storage (replace with Redis in production)
 const userClaims = new Map<string, { claimCount: number; lastClaimDate: string }>();
 
