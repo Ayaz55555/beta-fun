@@ -46,10 +46,10 @@ export default function Home() {
         setClaimCount(data.claimCount || 0);
         setLastClaimDate(data.lastClaimDate || "");
       }
-    } catch (_error) {
-      console.error("Failed to load claims:", _error);
+    } catch {
+      console.error("Failed to load claims");
     }
-  }, [authData?.success, authData?.user?.fid]);
+  }, [authData?.success, authData?.user?.fid, authData?.user]);
 
   // Check wallet connection
   useEffect(() => {
