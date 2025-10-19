@@ -46,8 +46,8 @@ export default function Home() {
         setClaimCount(data.claimCount || 0);
         setLastClaimDate(data.lastClaimDate || "");
       }
-    } catch (error) {
-      console.error("Failed to load claims:", error);
+    } catch (_error) {
+      console.error("Failed to load claims:", _error);
     }
   };
 
@@ -70,11 +70,14 @@ export default function Home() {
     if (!isFrameReady) {
       setFrameReady();
     }
+  }, [setFrameReady, isFrameReady]);
 
+  // Load claims when auth data is available
+  useEffect(() => {
     if (authData?.success) {
       loadUserClaims();
     }
-  }, [setFrameReady, isFrameReady, authData]);
+  }, [authData]);
  
   
 
