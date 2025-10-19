@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQuickAuth, useMiniKit } from "@coinbase/onchainkit/minikit";
 import { useRouter } from "next/navigation";
 import { minikitConfig } from "../minikit.config";
@@ -36,7 +36,7 @@ export default function Home() {
   );
 
   // Load user's claim data from Redis/API
-  const loadUserClaims = async () => {
+  const loadUserClaims = useCallback(async () => {
     if (!authData?.success || !authData.user) return;
 
     try {
@@ -49,7 +49,7 @@ export default function Home() {
     } catch (_error) {
       console.error("Failed to load claims:", _error);
     }
-  };
+  }, [authData?.success, authData?.user?.fid]);
 
   // Check wallet connection
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function Home() {
     if (authData?.success) {
       loadUserClaims();
     }
-  }, [authData]);
+  }, [authData, loadUserClaims]);
  
   
 
@@ -151,8 +151,8 @@ export default function Home() {
       } else {
         setError("Failed to claim reward");
       }
-    } catch (error) {
-      console.error("Error claiming reward:", error);
+    } catch {
+      console.error("Error claiming reward");
       setError("An error occurred while claiming reward");
     } finally {
       setIsClaiming(false);
