@@ -49,7 +49,7 @@ export default function Home() {
     } catch {
       console.error("Failed to load claims");
     }
-  }, [authData?.success, authData?.user]);
+  }, []);
 
   // Check wallet connection
   useEffect(() => {
