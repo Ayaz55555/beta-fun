@@ -50,7 +50,7 @@ export default function Home() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -75,12 +75,35 @@ export default function Home() {
       return;
     }
 
-    // TODO: Save email to database/API with user FID
-    console.log("Valid email submitted:", email);
-    console.log("User authenticated:", authData.user);
-    
-    // Navigate to success page
-    router.push("/success");
+    try {
+      // Save email to database/API with user FID and send JO token reward
+      console.log("Valid email submitted:", email);
+      console.log("User authenticated:", authData.user);
+
+      // Get user wallet address (assuming it's available in context or auth data)
+      const walletAddress = (context?.user as any)?.address || (context?.user as any)?.custodyAddress;
+
+      if (walletAddress) {
+        // Send JO token reward
+        const rewardResponse = await fetch('/api/wallet', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ address: walletAddress }),
+        });
+
+        if (!rewardResponse.ok) {
+          console.warn("Failed to send reward, but continuing with registration");
+        }
+      }
+
+      // Navigate to success page
+      router.push("/success");
+    } catch (error) {
+      console.error("Error during registration:", error);
+      setError("An error occurred during registration. Please try again.");
+    }
   };
 
   return (
@@ -91,12 +114,12 @@ export default function Home() {
       
       <div className={styles.content}>
         <div className={styles.waitlistForm}>
-          <h1 className={styles.title}>Join {minikitConfig.miniapp.name.toUpperCase()}</h1>
-          
-          <p className={styles.subtitle}>
-             Hey {context?.user?.displayName || "there"}, Get early access and be the first to experience the future of<br />
-            crypto marketing strategy.
-          </p>
+          <h1 className={styles.title}>{minikitConfig.miniapp.name.toUpperCase()}</h1>
+
+           <p className={styles.subtitle}>
+              Hey {context?.user?.displayName || "there"}, Join our community and get rewarded with 0.001 Talent tokens!<br />
+             Experience the future of crypto.
+           </p>
 
           <form onSubmit={handleSubmit} className={styles.form}>
             <input
@@ -110,7 +133,7 @@ export default function Home() {
             {error && <p className={styles.error}>{error}</p>}
             
             <button type="submit" className={styles.joinButton}>
-              JOIN WAITLIST
+              JOIN BETA FUN
             </button>
           </form>
         </div>
