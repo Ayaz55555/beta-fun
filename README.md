@@ -57,7 +57,7 @@ To personalize your app, change the `name`, `subtitle`, and `description` fields
 ### 1. Deploy to Vercel
 
 ```bash
-vercel --prod
+vercel --
 ```
 
 You should have a URL deployed to a domain similar to: `https://your-vercel-project-name.vercel.app/`
