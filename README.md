@@ -60,7 +60,7 @@ To personalize your app, change the `name`, `subtitle`, and `description` fields
 vercel --prod
 ```
 
-You should have a URL deployed to a domain similar to: `https://your-vercel-project-name.vercel.app/`
+You should have a URL deployed to a domain similar : `https://your-vercel-project-name.vercel.app/`
 
 ### 2. Update environment variables
 
